@@ -5,7 +5,7 @@ RPistepper is a library containing:
 * A function to execute a zig-zag motion with two motors.
 
 ## Usage
-* ### class StepperPi
+### class StepperPi
 This class allows the user to control a 4 pin stepper motor using 4 GPIO pins of a RPi. Software uses BCM mode for pin indexing.
 Arguments are a list with the 4 pins: `pins = [Coil_A1, Coil_A2, Coil_B1, Coil_B2]`
 The delay between steps (default = 20ms) is an optional argument
@@ -42,7 +42,7 @@ def reset(self):
     '''
 ```
 The main method is `move`, which moves the motor the desired number of steps
-* ### function zig_zag
+### function zig_zag
 zig_zag executes a routine with two stepper motors:
 ```python
 def zig_zag(motor1, motor2, amp1, amp2, delay=None):
