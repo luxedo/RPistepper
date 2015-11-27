@@ -22,11 +22,7 @@ class RPistepper(object):
     This class is best used with the 'with' statement to propperly
     handle the cleanup of the GPIOs
     '''
-
-    #__________________________________________________________________
-    # initial setup
-    GPIO.setmode(GPIO.BCM)
-
+    
     #__________________________________________________________________
     # class attributes
     DELAY = 0.02
@@ -35,6 +31,7 @@ class RPistepper(object):
     # magic methods
 
     def __init__(self, pins, delay=DELAY):
+        GPIO.setmode(GPIO.BCM)
         self.A1_pin, self.A2_pin, self.B1_pin, self.B2_pin = pins
         self.delay = delay
         GPIO.setup(self.A1_pin, GPIO.OUT)
