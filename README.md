@@ -4,6 +4,40 @@ RPistepper is a library containing:
 * A class to control a stepper motor with a RPi.
 * A function to execute a zig-zag motion with two motors.
 
+## Wiring
+In our setup, the power to the motors (Vm) is supplied with the 5V pins of the RPi, the grounding of the coils is controlled with a [ULN2803A](http://www.ti.com/lit/ds/symlink/uln2803a.pdf) transistor array.
+
+![Alt text](pinout.png "Example setup")
+
+#### Conections RPi - ULN2803A:
+
+| RPi Pin (BCM)| ULN2803A|
+|--------------|---------|
+|      17      |    1B   |
+|      27      |    2B   |
+|      10      |    3B   |
+|      9       |    4B   |
+|      14      |    5B   |
+|      15      |    6B   |
+|      23      |    7B   |
+|      24      |    8B   |
+
+#### Conections ULN2803A - Motors:
+
+| ULN2803A| Motors          |
+|---------|-----------------|
+|    1B   | Motor 1 Coil A1 |
+|    2B   | Motor 1 Coil A2 |
+|    3B   | Motor 1 Coil B1 |
+|    4B   | Motor 1 Coil B2 |
+|    5B   | Motor 2 Coil A1 |
+|    6B   | Motor 2 Coil A2 |
+|    7B   | Motor 2 Coil B1 |
+|    8B   | Motor 2 Coil B2 |
+
+In this case, two motors were attached to the ULN2803A.
+
+
 ## Usage
 ### class StepperPi
 This class allows the user to control a 4 pin stepper motor using 4 GPIO pins of a RPi. Software uses BCM mode for pin indexing.
@@ -21,6 +55,7 @@ with RPistepper.RPistepper(M1_pins) as M1:
         M1.release()
         raw_input('enter to execute next step')
 ```
+
 #### Methods
 Currently there are three implemented methods:
 ```python
@@ -65,6 +100,6 @@ e.g.
 import RPistepper
 M1_pins = [17, 27, 10, 9]
 M2_pins = [14, 15, 23, 24]
-with RPistepper(M1_pins) as M1, RPistepper(M2_pins) as M2:
+with RPistepper.RPistepper(M1_pins) as M1, RPistepper.RPistepper(M2_pins) as M2:
     zig_zag(M1, M2, (5, 10), (5, 10))   # execute zig-zag
 ```

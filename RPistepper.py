@@ -15,7 +15,7 @@ import time
 # classezz
 class RPistepper(object):
     '''
-    This class allows the user to control a 4 pin stepper motor using
+    This class allows the user to control a 6 pin stepper motor using
     4 GPIO pins of a RPi. Software uses BCM mode for pin indexing.
     Arguments are a list with the 4 pins (Coil_A1, Coil_A2, Coil_B1, Coil_B2)
     The delay between steps (default = 20ms) is an optional argument
