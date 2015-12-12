@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+    #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 '''
 RPistepper is a library containing:
@@ -39,10 +39,12 @@ class RPiStepper(object):
     This class is best used with the 'with' statement to properly
     handle the cleanup of the GPIOs.
 
-    self.steps is a property of this class that will get the number of steps
-    taken from the initial position or set to a specific step, similar to self.move.
+    self.steps is a property of this class that will get the number of
+    steps taken from the initial position or set to a specific step,
+    similar to self.move.
 
-    In order to save power, it's advised to call self.release() when the motor is idle.
+    In order to save power, it's advised to call self.release() when
+    the motor is idle.
     '''
 
     #__________________________________________________________________
@@ -54,15 +56,16 @@ class RPiStepper(object):
     # magic methods
     def __init__(self, pins, delay=DELAY, verbose=VERBOSE):
         '''
-        Arguments are a list with the 4 pins (Coil_A1, Coil_A2, Coil_B1, Coil_B2), the
-        delay between steps (default = 20ms) and verbose to display reports on the
-        motor movements, the last two are optional.
+        Arguments are a list with the 4 pins (Coil_A1, Coil_A2,
+        Coil_B1, Coil_B2), the delay between steps (default = 20ms) and
+        verbose to display reports on the motor movements, the last two
+        are optional.
         '''
         self.PINS = pins
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.PINS, GPIO.OUT)
         self.DELAY = delay
-        self.VERBOSE = delay
+        self.VERBOSE = verbose
         self.actual_state = []
         self._step_list = [
             (1, 1, 0, 0),
@@ -71,7 +74,7 @@ class RPiStepper(object):
             (0, 1, 0, 1),
             (0, 0, 1, 1),
             (1, 0, 0, 1)]
-        self._zero = [0, 0, 0, 0]
+        self._zero = [0]*4
         self._steps = 0
         self._set_step(self._step_list[0])
         self.release()
@@ -102,7 +105,8 @@ class RPiStepper(object):
     # methods
     def move(self, steps):
         '''
-        Moves the motor 'steps' steps. Negative steps moves the motor backwards
+        Moves the motor 'steps' steps. Negative steps moves the motor
+        backwards
         '''
         if steps == 0:
             return
@@ -149,9 +153,10 @@ class RPiStepper(object):
 def zig_zag(motor1, motor2, amp1, amp2, delay=None):
     '''
     Executes a zig-zag movement with two RPistepper objects.
-    Arguments are: motor1 and motor2 objects and amp1, amp2, the amplitude
-    of movement, a tuple (step, rep) representing the number of steps per
-    iteration and the number of iterations of the following algorithm:
+    Arguments are: motor1 and motor2 objects and amp1, amp2, the
+    amplitude of movement, a tuple (step, rep) representing the number
+    of steps per iteration and the number of iterations of the following
+    algorithm:
         Repeat rep1 times:
             1. Moves motor 2 step2*rep2 steps forward
             2. Moves motor 1 step1 steps forward
@@ -159,7 +164,8 @@ def zig_zag(motor1, motor2, amp1, amp2, delay=None):
             4. Moves motor 1 step1 steps forward
         Reset to initial state
         Release the motors
-    It's possible to change the delay between steps with the 'delay' argument
+    It's possible to change the delay between steps with the 'delay'
+    argument
     '''
     step1, rep1 = amp1
     step2, rep2 = amp2
@@ -176,7 +182,6 @@ def zig_zag(motor1, motor2, amp1, amp2, delay=None):
     motor1.release()
     motor2.release()
 
-
 def square_spiral(motor1, motor2, amplitude, delay=None):
     '''
     Executes a square spiral movement with two RPistepper objects.
@@ -190,7 +195,8 @@ def square_spiral(motor1, motor2, amplitude, delay=None):
             4. Moves motor 2 to position -i
         Reset to initial state
         Release the motors
-    It's possible to change the delay between steps with the 'delay' argument
+    It's possible to change the delay between steps with the 'delay'
+    argument
     '''
     step, rep = amplitude
     if delay:
