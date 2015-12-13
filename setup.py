@@ -1,8 +1,8 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='RPistepper',
-    version='0.1.0a0',
+    version='0.1a0',
     description='RPistepper is a library control stepper motors using a Raspberry Pi and a transistor array',
     long_description=open('README.rst').read(),
     url='https://github.com/ArmlessJohn404/RPistepper',
@@ -24,5 +24,6 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
     keywords='RPi ULN2803A stepper motor',
-    install_requires=['RPi.GPIO'],
+    packages=find_packages(exclude=['RPi']),
+    install_requires=['RPi.GPIO>=0.5.8'],
 )

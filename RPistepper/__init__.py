@@ -1,4 +1,4 @@
-    #!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
 RPistepper is a library containing:
@@ -111,7 +111,7 @@ class RPiStepper(object):
         if steps == 0:
             return
         if self.VERBOSE:
-            print str(self)+ ', Moving: {0} steps'.format(steps)
+            print(str(self)+ ', Moving: {0} steps'.format(steps))
         rotation = steps/abs(steps)
         for i in range(0, steps, rotation):
             index = (self._steps + rotation)%len(self._step_list)
