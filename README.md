@@ -27,14 +27,14 @@ In our setup, the power to the motors (Vm) is supplied with the 5V pins of the R
 
 | ULN2803A| Motors          |
 |---------|-----------------|
-|    1B   | Motor_1 Coil_A1 |
-|    2B   | Motor_1 Coil_A2 |
-|    3B   | Motor_1 Coil_B1 |
-|    4B   | Motor_1 Coil_B2 |
-|    5B   | Motor_2 Coil_A1 |
-|    6B   | Motor_2 Coil_A2 |
-|    7B   | Motor_2 Coil_B1 |
-|    8B   | Motor_2 Coil_B2 |
+|    1C   | Motor_1 Coil_A1 |
+|    2C   | Motor_1 Coil_A2 |
+|    3C   | Motor_1 Coil_B1 |
+|    4C   | Motor_1 Coil_B2 |
+|    5C   | Motor_2 Coil_A1 |
+|    6C   | Motor_2 Coil_A2 |
+|    7C   | Motor_2 Coil_B1 |
+|    8C   | Motor_2 Coil_B2 |
 
 In this case, two motors were attached to the ULN2803A.
 

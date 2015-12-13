@@ -28,6 +28,10 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 #______________________________________________________________________
+# version
+__version__ = '0.2a0'
+
+#______________________________________________________________________
 # classezz
 class RPiStepper(object):
     '''
@@ -79,6 +83,18 @@ class RPiStepper(object):
         self._set_step(self._step_list[0])
         self.release()
 
+    def __repr__(self):
+        return 'Motor at pins: {0}, Steps: {1}, Position: {2}'.format(
+            self.PINS, self.steps, self.actual_state)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, tb):
+        self.cleanup()
+
+    #__________________________________________________________________
+    # properties
     @property
     def steps(self):
         '''
@@ -91,16 +107,6 @@ class RPiStepper(object):
         steps = value - self._steps
         self.move(steps)
 
-    def __repr__(self):
-        return 'Motor at pins: {0}, Steps: {1}, Position: {2}'.format(
-            self.PINS, self.steps, self.actual_state)
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, type, value, tb):
-        self.cleanup()
-
     #__________________________________________________________________
     # methods
     def move(self, steps):
@@ -112,7 +118,7 @@ class RPiStepper(object):
             return
         if self.VERBOSE:
             print(str(self)+ ', Moving: {0} steps'.format(steps))
-        rotation = steps/abs(steps)
+        rotation = steps//abs(steps)
         for i in range(0, steps, rotation):
             index = (self._steps + rotation)%len(self._step_list)
             self._set_step(self._step_list[index])
@@ -145,8 +151,7 @@ class RPiStepper(object):
         Sets the pins A_1, A_2, B_1, B_2, 1 or 0 (HIGH ou LOW)
         '''
         self.actual_state = states
-        for pin, state in zip(self.PINS, states):
-            GPIO.output(pin, state)
+        GPIO.output(self.PINS, states)
 
 #______________________________________________________________________
 # functions

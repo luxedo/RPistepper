@@ -1,10 +1,10 @@
 RPistepper
 ==========
 
-RPistepper is a library containing: \* A class to control a stepper
-motor with a RPi. \* A function to execute a zig-zag motion with two
-motors. \* A function to execute a square\_spiral motion with two
-motors.
+RPistepper is a library containing:
+ - A class to control a stepper motor with a RPi.
+ - A function to execute a zig-zag motion with two motors.
+ -  A function to execute a square\_spiral motion with two motors.
 
 Wiring
 ------
@@ -14,10 +14,8 @@ of the RPi, the grounding of the coils is controlled with a
 `ULN2803A <http://www.ti.com/lit/ds/symlink/uln2803a.pdf>`__ transistor
 array.
 
-.. figure:: pinout.png
+.. figure:: https://github.com/ArmlessJohn404/RPistepper/blob/master/pinout.png?raw=true
    :alt: Example setup
-
-   Alt text
 
 Conections RPi - ULN2803A:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -48,21 +46,21 @@ Conections ULN2803A - Motors:
 +------------+---------------------+
 | ULN2803A   | Motors              |
 +============+=====================+
-| 1B         | Motor\_1 Coil\_A1   |
+| 1C         | Motor\_1 Coil\_A1   |
 +------------+---------------------+
-| 2B         | Motor\_1 Coil\_A2   |
+| 2C         | Motor\_1 Coil\_A2   |
 +------------+---------------------+
-| 3B         | Motor\_1 Coil\_B1   |
+| 3C         | Motor\_1 Coil\_B1   |
 +------------+---------------------+
-| 4B         | Motor\_1 Coil\_B2   |
+| 4C         | Motor\_1 Coil\_B2   |
 +------------+---------------------+
-| 5B         | Motor\_2 Coil\_A1   |
+| 5C         | Motor\_2 Coil\_A1   |
 +------------+---------------------+
-| 6B         | Motor\_2 Coil\_A2   |
+| 6C         | Motor\_2 Coil\_A2   |
 +------------+---------------------+
-| 7B         | Motor\_2 Coil\_B1   |
+| 7C         | Motor\_2 Coil\_B1   |
 +------------+---------------------+
-| 8B         | Motor\_2 Coil\_B2   |
+| 8C         | Motor\_2 Coil\_B2   |
 +------------+---------------------+
 
 In this case, two motors were attached to the ULN2803A.
@@ -71,7 +69,7 @@ Usage
 -----
 
 class RPiStepper
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 This class allows the user to control a 6 pin stepper motor using 4 GPIO
 pins of a RPi.
