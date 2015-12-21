@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='RPistepper',
-    version='0.2a0',
+    version='0.3a0',
     description='RPistepper is a library control stepper motors using a Raspberry Pi and a transistor array',
     long_description=open('README.rst').read(),
     url='https://github.com/ArmlessJohn404/RPistepper',

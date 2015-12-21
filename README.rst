@@ -68,7 +68,7 @@ In this case, two motors were attached to the ULN2803A.
 Usage
 -----
 
-class RPiStepper
+class Motor
 ^^^^^^^^^^^^^^^^
 
 This class allows the user to control a 6 pin stepper motor using 4 GPIO
@@ -94,7 +94,7 @@ display reports on the motor movements, the last two are optional. e.g:
 
     import RPistepper as stp
     M1_pins = [17, 27, 10, 9]
-    with stp.RPiStepper(M1_pins) as M1:
+    with stp.Motor(M1_pins) as M1:
         for i in range(10):               # moves 20 steps,release and wait
             print M1
             M1.move(20)
@@ -110,7 +110,7 @@ use the method ``reset``.
 
     import RPistepper as stp
     M1_pins = [17, 27, 10, 9]
-    M1 = stp.RPiStepper(M1_pins)
+    M1 = stp.Motor(M1_pins)
     for i in range(10):               # moves 20 steps,release and wait
         print M1
         M1.move(20)
@@ -147,6 +147,15 @@ Currently there are four implemented methods:
 
 .. code:: python
 
+    def zero(self):
+        '''
+        Sets the motor to the next position which Coil_A1 and Coil_A2
+        are on. Sets this position as the reference (steps = 0).
+        '''
+
+
+.. code:: python
+
     def cleanup(self):
         '''
         Cleans the GPIO resources
@@ -165,7 +174,7 @@ step using the ``steps`` property:
 
     import RPistepper as stp
     M1_pins = [17, 27, 10, 9]
-    with stp.RPiStepper(M1_pins) as M1:
+    with stp.Motor(M1_pins) as M1:
         for i in range(10):               # moves 20 steps,release and wait
             print M1.steps
             M1.steps = 20*i

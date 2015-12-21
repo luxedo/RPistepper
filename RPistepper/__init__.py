@@ -29,11 +29,11 @@ from time import sleep
 
 #______________________________________________________________________
 # version
-__version__ = '0.2a0'
+__version__ = '0.3a0'
 
 #______________________________________________________________________
 # classezz
-class RPiStepper(object):
+class Motor(object):
     '''
     This class allows the user to control a 6 pin stepper motor using
     4 GPIO pins of a RPi.
@@ -78,7 +78,7 @@ class RPiStepper(object):
             (0, 1, 0, 1),
             (0, 0, 1, 1),
             (1, 0, 0, 1)]
-        self._zero = [0]*4
+        self._release_all = [0]*4
         self._steps = 0
         self._set_step(self._step_list[0])
         self.release()
@@ -129,13 +129,29 @@ class RPiStepper(object):
         '''
         Sets all pins low. Power saving mode
         '''
-        self._set_step(self._zero)
-        self.actual_state = self._zero
+        self._set_step(self._release_all)
+        self.actual_state = self._release_all
+
+    def lock(self):
+        '''
+        Locks the pins in the last known step
+        '''
+        index = (self._steps)%len(self._step_list)
+        self._set_step(self._step_list[index])
 
     def reset(self):
         '''
         Returns the motor to it's initial position
         '''
+        self.steps = 0
+
+    def zero(self):
+        '''
+        Sets the motor to the next position which Coil_A1 and Coil_A2
+        are on. Sets this position as the reference (steps = 0).
+        '''
+        self._steps = 0
+        self.steps = 6
         self.steps = 0
 
     def cleanup(self):
@@ -152,6 +168,10 @@ class RPiStepper(object):
         '''
         self.actual_state = states
         GPIO.output(self.PINS, states)
+
+#______________________________________________________________________
+# backwards compatibility
+RPiStepper = Motor
 
 #______________________________________________________________________
 # functions
