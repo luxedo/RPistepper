@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-RPistepper Shell
+RPistepper shell command
 
 Copyright (C) 2015 Luiz Eduardo Amaral <luizamaral306@gmail.com>
 
@@ -18,7 +18,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-
+#______________________________________________________________________
+# imports
+import argparse
 from RPistepper import shell
+from RPistepper import gui
 
-shell.Shell().cmdloop()
+#______________________________________________________________________
+# main
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='RPistepper command line interface.')
+
+    parser.add_argument('-g', '--gui', dest='run', action='store_const',
+        const=lambda: gui.GUI().mainloop(), default=lambda: shell.Shell().cmdloop(),
+        help='starts the graphical user interface')
+
+    args = parser.parse_args()
+    args.run()

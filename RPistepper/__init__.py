@@ -32,7 +32,17 @@ from time import sleep
 __version__ = '0.3a0'
 
 #______________________________________________________________________
-# classezz
+# globals
+m0 = [2, 3, 4, 17],
+m1 = [14, 15, 18, 23],
+m2 = [27, 22, 10, 9],
+m3 = [24, 25, 8, 7],
+m4 = [11, 0, 5, 6],
+m5 = [1, 12, 16, 20],
+m6 = [13, 19, 26, 21]
+
+#______________________________________________________________________
+# classes
 class Motor(object):
     '''
     This class allows the user to control a 6 pin stepper motor using
@@ -71,6 +81,7 @@ class Motor(object):
         self.DELAY = delay
         self.VERBOSE = verbose
         self.actual_state = []
+        self.locked = False
         self._step_list = [
             (1, 1, 0, 0),
             (1, 0, 1, 0),
@@ -124,6 +135,7 @@ class Motor(object):
             self._set_step(self._step_list[index])
             sleep(self.DELAY)
             self._steps += rotation
+        self.locked = True
 
     def release(self):
         '''
@@ -131,6 +143,7 @@ class Motor(object):
         '''
         self._set_step(self._release_all)
         self.actual_state = self._release_all
+        self.locked = False
 
     def lock(self):
         '''
@@ -138,12 +151,14 @@ class Motor(object):
         '''
         index = (self._steps)%len(self._step_list)
         self._set_step(self._step_list[index])
+        self.locked = True
 
     def reset(self):
         '''
         Returns the motor to it's initial position
         '''
         self.steps = 0
+        self.locked = True
 
     def zero(self):
         '''
@@ -153,6 +168,7 @@ class Motor(object):
         self._steps = 0
         self.steps = 6
         self.steps = 0
+        self.locked = True
 
     def cleanup(self):
         '''

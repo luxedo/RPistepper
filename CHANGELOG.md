@@ -4,6 +4,8 @@
 * Added zero method
 * Changed `RPiStepper` class to `Motor` class
 * Added RPistepper shell
+* Added RPistepper gui
+* Added `rpistepper` command 
 * in progress
 
 ## 0.2a0
