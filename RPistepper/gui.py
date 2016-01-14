@@ -50,7 +50,8 @@ class GUI(tk.Tk):
         self.menubar.add_cascade(label='Mode', menu=self.modemenu)
 
         self.helpmenu = tk.Menu(self.menubar, tearoff=0)
-        self.helpmenu.add_command(label='About', command=self.about_message)
+        self.helpmenu.add_command(label='About', command=lambda:
+            self.dialog_window('About RPistepper', 'RPistepper is an application to control steper motors with a Raspberry Pi'))
         self.menubar.add_cascade(label='Help', menu=self.helpmenu)
 
         self.config(menu=self.menubar)
@@ -78,16 +79,34 @@ class GUI(tk.Tk):
         for column, motor in enumerate(self.PINS):
             self.create_motor_block(motor, column)
 
-        self.create_2d_movement_view()
+        self.zig_zag_frame = {}
+        self.zig_zag_frame['frame'] = ttk.Frame(self.movements_2d_view, relief=tk.SUNKEN, padding=10)
+        self.create_function_frame(self.zig_zag_frame, 'Zig-Zag:\nChoose 2 motors')
+        self.zig_zag_frame['frame'].grid(row=0, column=0)
+        self.zig_zag_frame['button']['command'] = self.execute_zig_zag_cmd
+
+        self.s_spiral_frame = {}
+        self.s_spiral_frame['frame'] = ttk.Frame(self.movements_2d_view, relief=tk.SUNKEN, padding=10)
+        self.create_function_frame(self.s_spiral_frame, 'Square-Spiral:\nChoose 2 motors')
+        self.s_spiral_frame['frame'].grid(row=0, column=1, sticky=(tk.N, tk.S, tk.E, tk.W))
+        self.s_spiral_frame['button']['command'] = self.execute_s_spiral_cmd
+        self.s_spiral_frame['amp_y'].grid_remove()
+        self.s_spiral_frame['rep_y'].grid_remove()
+        self.s_spiral_frame['label_1y'].grid_remove()
+        self.s_spiral_frame['label_2y'].grid_remove()
+        self.s_spiral_frame['label_2x'].grid(row=8, column=1)
+        self.s_spiral_frame['rep_x'].grid(row=9, column=1)
+        self.s_spiral_frame['label_1x']['text'] = 'Amplitude'
+        self.s_spiral_frame['label_2x']['text'] = 'Repetitions'
 
         self.switch_movements_2d_view()
         # self.switch_control_motors_view()
 
-    def about_message(self):
+    def dialog_window(self, title, text):
         top = tk.Toplevel()
-        top.title('About RPistepper')
+        top.title(title)
 
-        msg = tk.Message(top, text='RPistepper is an application to control steper motors with a Raspberry Pi')
+        msg = tk.Message(top, text=text)
         msg.grid()
 
         button = tk.Button(top, text='Dismiss', command=top.destroy)
@@ -112,48 +131,69 @@ class GUI(tk.Tk):
         self.on_off_button.grid_remove()
         self.motor_view.grid_remove()
 
-    def create_2d_movement_view(self):
-        self.zig_zag_frame = ttk.Frame(self.movements_2d_view, relief=tk.SUNKEN)
+    def create_function_frame(self, frame_dict, title):
+        frame_dict['label_0'] = tk.Label(frame_dict['frame'], text=title)
+        frame_dict['label_0'].grid()
 
-        self.zig_zag_label_0 = tk.Label(self.zig_zag_frame, text='Zig-Zag:\nChoose 2 motors')
-        self.zig_zag_label_0.grid()
-
-        self.zig_zag_checkbox_frame = ttk.Frame(self.zig_zag_frame,
+        frame_dict['checkbox_frame'] = ttk.Frame(frame_dict['frame'],
             relief=tk.SUNKEN)
-        self.zig_zag_checkbox_frame.grid()
-        self.zig_zag_checkbox = {}
+        frame_dict['checkbox_frame'].grid()
+        frame_dict['checkbox'] = {}
 
-        self.zig_zag_label_x = tk.Label(self.zig_zag_checkbox_frame, text='x axis')
-        self.zig_zag_label_x.grid(row=0, column=0)
-        self.zig_zag_label_y = tk.Label(self.zig_zag_checkbox_frame, text='y axis')
-        self.zig_zag_label_y.grid(row=0, column=1)
+        frame_dict['label_x'] = tk.Label(frame_dict['checkbox_frame'], text='x axis')
+        frame_dict['label_x'].grid(row=0, column=0)
+        frame_dict['label_y'] = tk.Label(frame_dict['checkbox_frame'], text='y axis')
+        frame_dict['label_y'].grid(row=0, column=1)
+        frame_dict['checkbox']['var_x'] = tk.IntVar()
+        frame_dict['checkbox']['var_y'] = tk.IntVar()
+        frame_dict['checkbox']['var_x'].set(0)
+        frame_dict['checkbox']['var_y'].set(1)
         for row, motor in enumerate(self.PINS):
-            self.zig_zag_checkbox[motor+'_var_0'] = tk.IntVar()
-            self.zig_zag_checkbox[motor+'_0'] = ttk.Checkbutton(self.zig_zag_checkbox_frame, text='motor '+motor, variable=self.zig_zag_checkbox[motor+'_var_0'])
-            self.zig_zag_checkbox[motor+'_0'].grid(row=row+1, column=0)
-            self.zig_zag_checkbox[motor+'_var_1'] = tk.IntVar()
-            self.zig_zag_checkbox[motor+'_1'] = ttk.Checkbutton(self.zig_zag_checkbox_frame, text='motor '+motor, variable=self.zig_zag_checkbox[motor+'_var_1'])
-            self.zig_zag_checkbox[motor+'_1'].grid(row=row+1, column = 1)
+            frame_dict['checkbox'][motor+'_x'] = ttk.Radiobutton(
+                frame_dict['checkbox_frame'], text='motor '+motor, variable=frame_dict['checkbox']['var_x'], value=row)
+            frame_dict['checkbox'][motor+'_x'].grid(row=row+1, column=0)
+            frame_dict['checkbox'][motor+'_y'] = ttk.Radiobutton(
+                frame_dict['checkbox_frame'], text='motor '+motor, variable=frame_dict['checkbox']['var_y'], value=row)
+            frame_dict['checkbox'][motor+'_y'].grid(row=row+1, column = 1)
 
-        self.zig_zag_label_1 = tk.Label(self.zig_zag_frame, text='Choose movement amplitude')
-        self.zig_zag_label_1.grid()
+        frame_dict['label_1x'] = tk.Label(frame_dict['checkbox_frame'], text='Amp x')
+        frame_dict['label_1x'].grid(row=row+2, column=0)
 
-        self.zig_zag_amplitude = ttk.Entry(self.zig_zag_frame, width=10)
-        self.zig_zag_amplitude.insert(0, '10')
-        self.zig_zag_amplitude.grid()
+        frame_dict['label_1y'] = tk.Label(frame_dict['checkbox_frame'], text='Amp y')
+        frame_dict['label_1y'].grid(row=row+2, column=1)
 
-        self.zig_zag_label_2 = tk.Label(self.zig_zag_frame, text='Choose repetitions')
-        self.zig_zag_label_2.grid()
+        frame_dict['va_x'] =tk.StringVar()
+        frame_dict['amp_x'] = ttk.Entry(frame_dict['checkbox_frame'], width=7, textvariable=frame_dict['va_x'])
+        frame_dict['amp_x'].insert(0, '10')
+        frame_dict['amp_x'].grid(row=row+3, column=0)
 
-        self.zig_zag_repetitions = ttk.Entry(self.zig_zag_frame, width=10)
-        self.zig_zag_repetitions.insert(0, '10')
-        self.zig_zag_repetitions.grid()
+        frame_dict['va_y'] =tk.StringVar()
+        frame_dict['amp_y'] = ttk.Entry(frame_dict['checkbox_frame'], width=7, textvariable=frame_dict['va_y'])
+        frame_dict['amp_y'].insert(0, '10')
+        frame_dict['amp_y'].grid(row=row+3, column=1)
 
-        self.zig_zag_button = ttk.Button(self.zig_zag_frame, text='Execute zig zag!',
-        command=self.zig_zag_cmd)
-        self.zig_zag_button.grid(pady=5)
+        frame_dict['label_2x'] = tk.Label(frame_dict['checkbox_frame'], text='Rep x')
+        frame_dict['label_2x'].grid(row=row+4, column=0)
 
-        self.zig_zag_frame.grid()
+        frame_dict['label_2y'] = tk.Label(frame_dict['checkbox_frame'], text='Rep y')
+        frame_dict['label_2y'].grid(row=row+4, column=1)
+
+        frame_dict['vr_x'] =tk.StringVar()
+        frame_dict['rep_x'] = ttk.Entry(frame_dict['checkbox_frame'], width=7, textvariable=frame_dict['vr_x'])
+        frame_dict['rep_x'].insert(0, '10')
+        frame_dict['rep_x'].grid(row=row+5, column=0)
+
+        frame_dict['vr_y'] =tk.StringVar()
+        frame_dict['rep_y'] = ttk.Entry(frame_dict['checkbox_frame'], width=7, textvariable=frame_dict['vr_y'])
+        frame_dict['rep_y'].insert(0, '10')
+        frame_dict['rep_y'].grid(row=row+5, column=1)
+
+        frame_dict['button'] = ttk.Button(frame_dict['frame'], text='Execute!')
+        frame_dict['button'].grid(pady=5)
+
+        for child in frame_dict.values():
+            if hasattr(child, 'grid_configure'):
+                child.grid_configure(padx=10, pady=5)
 
     def create_motor_block(self, motor, column):
         '''
@@ -267,5 +307,34 @@ class GUI(tk.Tk):
         self.motor_object[motor].zero()
         self.update_message(motor)
 
-    def zig_zag_cmd(self):
-        pass
+    def execute_zig_zag_cmd(self):
+        mx = 'm'+str(self.zig_zag_frame['checkbox']['var_x'].get())
+        my = 'm'+str(self.zig_zag_frame['checkbox']['var_y'].get())
+        ax = int(self.zig_zag_frame['amp_x'].get())
+        ay = int(self.zig_zag_frame['amp_y'].get())
+        rx = int(self.zig_zag_frame['rep_x'].get())
+        ry = int(self.zig_zag_frame['rep_y'].get())
+        if mx == my :
+            self.dialog_window('error', 'You can\'t control two motors in the same port')
+            return
+        else:
+            motors = (stp.Motor(self.PINS[mx]), stp.Motor(self.PINS[my]))
+            stp.zig_zag(*motors, (ax, rx), (ay, ry))
+            for motor in motors:
+                motor.cleanup()
+                del motor
+
+    def execute_s_spiral_cmd(self):
+        mx = 'm'+str(self.s_spiral_frame['checkbox']['var_x'].get())
+        my = 'm'+str(self.s_spiral_frame['checkbox']['var_y'].get())
+        ax = int(self.s_spiral_frame['amp_x'].get())
+        rx = int(self.s_spiral_frame['rep_x'].get())
+        if mx == my :
+            self.dialog_window('error', 'You can\'t control two motors in the same port')
+            return
+        else:
+            motors = (stp.Motor(self.PINS[mx]), stp.Motor(self.PINS[my]))
+            stp.square_spiral(*motors, (ax, rx))
+            for motor in motors:
+                motor.cleanup()
+                del motor

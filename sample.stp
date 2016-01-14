@@ -1,0 +1,6 @@
+new
+move m0 100
+sleep 1000
+reset m0
+lock m0
+release m0

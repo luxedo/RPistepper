@@ -1,10 +1,10 @@
 RPistepper
 ==========
 
-RPistepper is a library containing:
- - A class to control a stepper motor with a RPi.
- - A function to execute a zig-zag motion with two motors.
- -  A function to execute a square\_spiral motion with two motors.
+RPistepper is a library containing: \* A class to control a stepper
+motor with a RPi. \* A function to execute a zig-zag motion with two
+motors. \* A function to execute a square\_spiral motion with two
+motors.
 
 Wiring
 ------
@@ -14,8 +14,10 @@ of the RPi, the grounding of the coils is controlled with a
 `ULN2803A <http://www.ti.com/lit/ds/symlink/uln2803a.pdf>`__ transistor
 array.
 
-.. figure:: https://github.com/ArmlessJohn404/RPistepper/blob/master/pinout.png?raw=true
+.. figure:: pinout.png
    :alt: Example setup
+
+   Alt text
 
 Conections RPi - ULN2803A:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -69,7 +71,7 @@ Usage
 -----
 
 class Motor
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^
 
 This class allows the user to control a 6 pin stepper motor using 4 GPIO
 pins of a RPi.
@@ -122,7 +124,7 @@ use the method ``reset``.
 Methods
 ^^^^^^^
 
-Currently there are four implemented methods:
+Currently there are five implemented methods:
 
 .. code:: python
 
@@ -152,7 +154,6 @@ Currently there are four implemented methods:
         Sets the motor to the next position which Coil_A1 and Coil_A2
         are on. Sets this position as the reference (steps = 0).
         '''
-
 
 .. code:: python
 
@@ -240,3 +241,19 @@ stepper motor objects:
             Release the motors
         It's possible to change the delay between steps with the 'delay' argument
         '''
+
+/bin/rpistepper
+---------------
+
+``rpistepper`` is a shell for controlling the motors. It provides all
+the methods in the ``Motor`` class. All the commands are documented in
+the shell. It's possible to pipe a list of commands to the shell:
+
+.. code:: bash
+
+    rpistepper < sample.stp
+            or
+    cat sample.stp | rpistepper
+
+Invoking ``rpistepper`` with ``-g`` flag will open a GUI application
+with similar functionality

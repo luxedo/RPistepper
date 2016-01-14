@@ -5,7 +5,7 @@
 * Changed `RPiStepper` class to `Motor` class
 * Added RPistepper shell
 * Added RPistepper gui
-* Added `rpistepper` command 
+* Added `rpistepper` command
 * in progress
 
 ## 0.2a0
@@ -15,6 +15,3 @@
 
 ## 0.1a0
 * Initial release
-
-# Issues
-* Piping `waitkey` in the shell doesn't stops the excecution

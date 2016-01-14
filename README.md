@@ -174,3 +174,13 @@ def square_spiral(motor1, motor2, amplitude, delay=None):
     It's possible to change the delay between steps with the 'delay' argument
     '''
 ```
+
+## /bin/rpistepper
+`rpistepper` is a shell for controlling the motors. It provides all the methods in the `Motor` class. All the commands are documented in the shell.
+It's possible to pipe a list of commands to the shell:
+```bash
+rpistepper < sample.stp
+        or
+cat sample.stp | rpistepper
+```
+Invoking `rpistepper` with `-g` flag will open a GUI application with similar functionality

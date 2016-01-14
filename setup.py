@@ -25,5 +25,6 @@ setup(
     ],
     keywords='RPi ULN2803A stepper motor',
     packages=find_packages(exclude=['RPi']),
+    scripts=['bin/rpistepper'],
     install_requires=['RPi.GPIO>=0.5.8'],
 )
