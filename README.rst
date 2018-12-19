@@ -14,7 +14,7 @@ of the RPi, the grounding of the coils is controlled with a
 `ULN2803A <http://www.ti.com/lit/ds/symlink/uln2803a.pdf>`__ transistor
 array.
 
-.. figure:: pinout.png
+.. figure:: https://raw.githubusercontent.com/luxedo/RPistepper/master/pinout.png
    :alt: Example setup
 
    Alt text
