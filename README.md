@@ -8,7 +8,7 @@ RPistepper is a library containing:
 ## Wiring
 In our setup, the power to the motors (Vm) is supplied with the 5V pins of the RPi, the grounding of the coils is controlled with a [ULN2803A](http://www.ti.com/lit/ds/symlink/uln2803a.pdf) transistor array.
 
-![Alt text](https://raw.githubusercontent.com/luxedo/RPistepper/master/pinout.png "Example setup")
+![Alt text](pinout.png "Example setup")
 
 #### Conections RPi - ULN2803A:
 
